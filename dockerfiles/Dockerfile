@@ -2,15 +2,11 @@ FROM node:13.10.1-buster as build-stage
 
 WORKDIR /app
 
-# Run this step separately to cache dependencies installation
-COPY package*.json /app/
-ADD local-packages /app/local-packages
-
 #ADD local-packages /app/local-packages
 RUN npm install
 RUN npm install -g @quasar/cli
 RUN npm link @quasar/cli
-COPY ./ /app/
+COPY .. /app/
 
 # Build for production
 RUN quasar build --no-progress --prod
