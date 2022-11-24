@@ -41,8 +41,8 @@ export default defineComponent({
   setup() {
     const $q = useQuasar()
     const search = ref()
-    const data = ref();
-    let atms: Atm[] = [];
+
+    const data = ref<Atm[]>();
     const loading = ref(false);
 
     onMounted(() => loadData(''));
@@ -55,9 +55,7 @@ export default defineComponent({
       loading.value = true;
       api.get<Atm[]>(`/atm/search?term=${term}`)
         .then((response) => {
-          atms = response.data;
-          data.value = atms;
-          console.log('ATM QUEDO EN ', atms)
+          data.value = response.data;
         })
         .catch(() => {
           $q.notify({
@@ -70,7 +68,7 @@ export default defineComponent({
         .finally(() => loading.value = false)
     }
 
-    return {atms, data, search, loading}
+    return { data, search, loading}
   }
 });
 </script>
