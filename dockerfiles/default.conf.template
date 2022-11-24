@@ -1,35 +1,9 @@
 client_max_body_size 20M;
 
 server {
-  listen ${LISTEN_PORT};
+  listen 80;
 
-  # header: X-Tenant-ID -> lowercased http_x_tenant_id
-  # REF: http://nginx.org/en/docs/http/ngx_http_core_module.html#var_http_
-
-  set $istanza "ATS";
-  if ( $http_x_tenant_id ~ ^.+$ ) { 
-    set $istanza "$http_x_tenant_id"; 
-  }
-
-  location = /auth {
-    internal;
-    # TODO fix prelios
-    proxy_pass ${KC_URL}/realms/Prelios/account;
-    proxy_pass_request_body off;
-    proxy_set_header Content-Length "";
-    proxy_set_header X-Original-URI $request_uri;
-    proxy_set_header Accept "application/json";
-  }
   location / {
-    sub_filter 'href="assets' 'href="$istanza/assets';
-    sub_filter 'href=assets' 'href=$istanza/assets';
-    sub_filter 'href=/' 'href=/$istanza/';
-    sub_filter 'href="/' 'href="/$istanza/';
-    sub_filter 'href=favicon' 'href=$istanza/favicon';
-    sub_filter 'href="favicon' 'href="$istanza/favicon';
-    sub_filter ' src=' ' src=/$istanza/';
-    sub_filter ' src="' ' src="/$istanza/';
-    sub_filter '</head>' '<script> const hasuraURL = "${HASURA_URL}"; const appVersion = "${APP_VERSION}"; const jobsRtURL = "${JOBS_RT_URL}"; const keycloakURL = "${KC_URL}"; const keycloakRealm = "$istanza"; const keycloakClientId = "${KC_CLIENT_ID}"; const showAppVersion = "${SHOW_APP_VERSION}"; const hasKcIntegrationURL = "${AUTHZ_GATEWAY_URL}"; const dbSchema = "${DB_SCHEMA}"; const locale = "${LOCALE}" </script> </head>';
     sub_filter_once off;
     root /usr/share/nginx/html;
     index index.html index.htm;

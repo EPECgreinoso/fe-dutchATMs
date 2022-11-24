@@ -3,6 +3,7 @@
 
     <div class="col-4 offset-1 ">
       <q-input
+        :loading="loading"
         v-model="search"
         debounce="100"
         placeholder="Search your ATM">
@@ -14,14 +15,20 @@
         <img src="atm.png" alt="atm-img" class="q-img">
       </div>
     </div>
+
     <div class="col entry-scrollarea offset-1 cursor-pointer">
+      <q-inner-loading :showing="loading">
+        <q-spinner-gears size="50px" color="primary"/>
+      </q-inner-loading>
       <Entry v-for="atm in data" :key="atm" :entry="atm"/>
+
+      <h4 v-if="data && data.length === 0" class="justify-center flex">There are not ATMs matching</h4>
     </div>
 
   </q-page>
 </template>
 <script lang="ts">
-import {defineComponent, ref, watch} from 'vue';
+import {defineComponent, onMounted, ref, watch} from 'vue';
 import {api} from 'boot/axios'
 import {useQuasar} from 'quasar'
 import {Atm} from 'components/models';
@@ -36,12 +43,16 @@ export default defineComponent({
     const search = ref()
     const data = ref();
     let atms: Atm[] = [];
+    const loading = ref(false);
+
+    onMounted(() => loadData(''));
 
     watch(search, (term) => {
       loadData(term);
     })
 
     function loadData(term: string) {
+      loading.value = true;
       api.get<Atm[]>(`/atm/?term=${term}`)
         .then((response) => {
           atms = response.data;
@@ -56,9 +67,10 @@ export default defineComponent({
             icon: 'report_problem'
           })
         })
+        .finally(() => loading.value = false)
     }
 
-    return {atms, data, search}
+    return {atms, data, search, loading}
   }
 });
 </script>
