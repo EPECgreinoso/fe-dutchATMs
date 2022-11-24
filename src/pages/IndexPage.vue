@@ -5,7 +5,7 @@
       <q-input
         v-model="search"
         debounce="100"
-        placeholder="Search">
+        placeholder="Search your ATM">
         <template v-slot:append>
           <q-icon name="search"/>
         </template>

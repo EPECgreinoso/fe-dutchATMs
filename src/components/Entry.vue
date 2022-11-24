@@ -4,14 +4,16 @@
     @click="openMap"
   >
     <div class="col entry-title d-flex">
-      Address: {{ entry.address.street }} {{ entry.address.houseNumber }}, {{ entry.address.postalCode }} -
-      {{ entry.address.city }}
+      Address: <span class="text-bold">{{ entry.address.street }} {{
+        entry.address.houseNumber
+      }}, {{ entry.address.postalCode }} -
+      {{ entry.address.city }}</span>
       <br>
-      Location: {{ entry.address.geoLocation.lat }}; {{ entry.address.geoLocation.lng }}
+      Location: <span class="text-bold">{{ entry.address.geoLocation.lat }}; {{ entry.address.geoLocation.lng }}</span>
       <br>
-      Distance: {{ entry.distance }}
+      Distance: <span class="text-bold">{{ entry.distance }}</span>
       <br>
-      Type: {{ entry.type }}
+      Type: <span class="text-bold">{{ entry.type }}</span>
     </div>
   </div>
 </template>
