@@ -1,17 +1,20 @@
 <template>
   <q-page class="row items-center justify-evenly">
-    <div>
+
+    <div class="col-4 offset-1 ">
       <q-input
         v-model="search"
         debounce="100"
-        filled
         placeholder="Search">
         <template v-slot:append>
           <q-icon name="search"/>
         </template>
       </q-input>
+      <div>
+        <img src="atm.png" alt="atm-img" class="q-img">
+      </div>
     </div>
-    <div class="entry-scrollarea">
+    <div class="col entry-scrollarea offset-1 cursor-pointer">
       <Entry v-for="atm in data" :key="atm" :entry="atm"/>
     </div>
 
