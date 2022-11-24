@@ -53,7 +53,7 @@ export default defineComponent({
 
     function loadData(term: string) {
       loading.value = true;
-      api.get<Atm[]>(`/atm/?term=${term}`)
+      api.get<Atm[]>(`/atm/search?term=${term}`)
         .then((response) => {
           atms = response.data;
           data.value = atms;
