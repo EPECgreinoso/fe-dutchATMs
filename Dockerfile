@@ -1,12 +1,16 @@
-FROM node:13.10.1-buster as build-stage
+FROM node:14-buster as build-stage
 
 WORKDIR /app
 
-#ADD local-packages /app/local-packages
+# Run this step separately to cache dependencies installation
+COPY package*.json /app/
+COPY yarn.lock /app/
+
+
 RUN npm install
 RUN npm install -g @quasar/cli
 RUN npm link @quasar/cli
-COPY .. /app/
+COPY ./ /app/
 
 # Build for production
 RUN quasar build --no-progress --prod
@@ -20,9 +24,12 @@ ENV LISTEN_PORT=80
 ARG APP_VERSION
 ENV APP_VERSION=$APP_VERSION
 
+CMD mkdir /etc/nginx/ssl
+
 COPY --from=build-stage /app/dist/spa/ /usr/share/nginx/html
-COPY ./dockerfiles/default.conf.template /etc/nginx/conf.d/default.conf.template
-COPY ./dockerfiles/start.sh /usr/share/nginx/start.sh
+COPY ./default.conf.template /etc/nginx/conf.d/default.conf.template
+
+COPY ./start.sh /usr/share/nginx/start.sh
 RUN chmod +x /usr/share/nginx/start.sh
 
 ENTRYPOINT ["/usr/share/nginx/start.sh"]
