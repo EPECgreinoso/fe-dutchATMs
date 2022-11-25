@@ -15,7 +15,7 @@
         <img src="atm.png" alt="atm-img" class="q-img">
       </div>
     </div>
-
+    
     <div class="col entry-scrollarea offset-1 cursor-pointer">
       <q-inner-loading :showing="loading">
         <q-spinner-gears size="50px" color="primary"/>
@@ -24,6 +24,7 @@
 
       <h4 v-if="data && data.length === 0" class="justify-center flex">There are not ATMs matching</h4>
     </div>
+
 
   </q-page>
 </template>
@@ -68,7 +69,7 @@ export default defineComponent({
         .finally(() => loading.value = false)
     }
 
-    return { data, search, loading}
+    return {data, search, loading}
   }
 });
 </script>
