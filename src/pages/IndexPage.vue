@@ -15,7 +15,7 @@
         <img src="atm.png" alt="atm-img" class="q-img">
       </div>
     </div>
-    
+
     <div class="col entry-scrollarea offset-1 cursor-pointer">
       <q-inner-loading :showing="loading">
         <q-spinner-gears size="50px" color="primary"/>
